@@ -1,5 +1,5 @@
 class Question < ApplicationRecord
-  belongs_to :interaction
+  belongs_to :prompt_template
   has_many :answers, dependent: :destroy
   accepts_nested_attributes_for :answers, allow_destroy: true
 

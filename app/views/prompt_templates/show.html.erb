@@ -1,0 +1,6 @@
+<%= render @prompt_template %>
+<div>
+  <%= link_to "Edit", edit_prompt_template_path(@prompt_template), class: "btn btn-secondary" %> |
+  <%= link_to "Back", prompt_templates_path, class: "btn btn-secondary" %>
+  <%= button_to "Destroy", @prompt_template, method: :delete, class: "btn btn-danger" %>
+</div>

@@ -10,7 +10,7 @@
     <%= form.hidden_field :_destroy %>
     <%= form.text_field :name, placeholder: 'Question', class: 'form-control' %>
     <small>
-      <%= link_to "Remove", "#", data: { action: "click->nested-form#remove_association" } %>
+      <%= link_to "Remove", "#", data: { action: "click->nested-form#remove_association" }, class: "btn btn-danger" %>
     </small>
   </div>
   <div data-controller="nested-form" data-dynamic-select-target='choice' data-nested-form-index-value='ANSWER_RECORD'>
@@ -23,7 +23,7 @@
       <%= render 'answer_fields', form: answer %>
     <% end %>
     <div data-nested-form-target="add_item">
-      <%= link_to "Add Answer", "#", data: { action: "nested-form#add_association" } %>
+      <%= link_to "Add Answer", "#", data: { action: "nested-form#add_association" }, class: "btn btn-success" %>
     </div>
   </div>
   <div data-controller="nested-form" data-dynamic-select-target='long'>

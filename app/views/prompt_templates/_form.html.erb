@@ -1,12 +1,12 @@
-<%= simple_form_for @interaction do |form| %>
+<%= simple_form_for @prompt_template do |form| %>
   <%= form.error_notification %>
   <%= form.error_notification message: form.object.errors[:base].to_sentence if form.object.errors[:base].present? %>
   <div class='form-group'>
-    <%= form.select :interaction_type,
-        options_for_select(Interaction.interaction_type_select, selected: form.object.interaction_type),
+    <%= form.select :prompt_template_type,
+        options_for_select(PromptTemplate.prompt_template_type_select, selected: form.object.prompt_template_type),
         {},
         'data-dynamic-select-target': 'select',
-        'data-action': 'dynamic-select#selected' %>
+        'data-action': 'dynamic-select#selected', class: "form-control" %>
   </div>
   <div class="form-inputs">
     <%= form.input :name %>
@@ -21,11 +21,10 @@
       <%= render 'question_fields', form: question %>
     <% end %>
     <div data-nested-form-target="add_item">
-      <%= link_to "Add Question", "#", data: { action: "nested-form#add_association" } %>
+      <%= link_to "Add Question", "#", data: { action: "nested-form#add_association" }, class: "btn btn-success" %>
     </div>
   </div>
   <div class="actions">
-    <%= form.button :submit %>
+    <%= form.button :submit, "Save", class: "btn btn-info" %>
   </div>
-  <div class="box well"><%= form.object.inspect %></div>
 <% end %>

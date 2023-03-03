@@ -1,0 +1,10 @@
+<h1>Templates</h1>
+<div id="prompt_templates">
+  <% @prompt_templates.each do |prompt_template| %>
+    <%= render prompt_template %>
+    <p>
+      <%= link_to "Show this prompt_template", prompt_template, class: "btn btn-info" %>
+    </p>
+  <% end %>
+</div>
+<%= link_to "New prompt_template", new_prompt_template_path, class: "btn btn-success" %>
