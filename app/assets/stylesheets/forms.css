@@ -1,0 +1,18 @@
+/* .question-fields {
+  margin: 5px;
+  border: 2px black solid;
+} */
+.box {
+  position: relative;
+  border: 1px solid #dee2e6;
+  padding: 1.5rem 3rem 1.5em 1.5em;
+  margin-bottom: 3rem;
+}
+
+.actions {
+  margin-top: 3rem;
+}
+
+.hidden {
+  display: none;
+}

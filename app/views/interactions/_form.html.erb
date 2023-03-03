@@ -1,0 +1,31 @@
+<%= simple_form_for @interaction do |form| %>
+  <%= form.error_notification %>
+  <%= form.error_notification message: form.object.errors[:base].to_sentence if form.object.errors[:base].present? %>
+  <div class='form-group'>
+    <%= form.select :interaction_type,
+        options_for_select(Interaction.interaction_type_select, selected: form.object.interaction_type),
+        {},
+        'data-dynamic-select-target': 'select',
+        'data-action': 'dynamic-select#selected' %>
+  </div>
+  <div class="form-inputs">
+    <%= form.input :name %>
+  </div>
+  <div data-controller="nested-form" data-nested-form-index-value='QUESTION_RECORD'>
+    <template data-nested-form-target='template'>
+      <%= form.fields_for :questions, Question.new, child_index: 'QUESTION_RECORD' do |question| %>
+        <%= render 'question_fields', form: question %>
+      <% end %>
+    </template>
+    <%= form.fields_for :questions do |question| %>
+      <%= render 'question_fields', form: question %>
+    <% end %>
+    <div data-nested-form-target="add_item">
+      <%= link_to "Add Question", "#", data: { action: "nested-form#add_association" } %>
+    </div>
+  </div>
+  <div class="actions">
+    <%= form.button :submit %>
+  </div>
+  <div class="box well"><%= form.object.inspect %></div>
+<% end %>

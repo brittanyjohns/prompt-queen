@@ -1,0 +1,27 @@
+<h1><%= @interaction.name %><small><%= @interaction.questions.count %></small></h1>
+  <% @interaction.questions.each do |question| %>
+    <h2><%= question.name %></h2>
+    <% case question.question_type %>
+    <% when 'single_choice' %>
+    <% question.answers.each do |answer| %>
+      <p>
+        <%= radio_button_tag question.id, answer.id %>
+        <%= answer.name %>
+      </p>
+    <% end %>
+    <% when 'multiple_choice' %>
+    <% question.answers.each do |answer| %>
+      <p>
+        <%= check_box_tag question.id, answer.id %>
+        <%= answer.name %>
+      </p>
+    <% end %>
+    <% when 'long_answer' %>
+    <%= text_area_tag question.id %>
+  <% end %>
+<% end %>
+<div>
+  <%= link_to "Edit this interaction", edit_interaction_path(@interaction) %> |
+  <%= link_to "Back to interactions", interactions_path %>
+  <%= button_to "Destroy this interaction", @interaction, method: :delete %>
+</div>

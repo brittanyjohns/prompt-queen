@@ -64,3 +64,16 @@ group :test do
   gem "selenium-webdriver"
   gem "webdrivers"
 end
+# Auth
+gem "devise"
+
+# Forms
+gem "simple_form"
+gem "country_select"
+
+# Icons
+gem "font-awesome-rails", "~> 4.7"
+# HTTP requests
+gem "faraday"
+
+gem "dry-initializer"
