@@ -8,7 +8,8 @@
   </div>
   <div class='form-group'>
     <%= form.hidden_field :_destroy %>
-    <%= form.text_field :name, placeholder: 'Question', class: 'form-control' %>
+    <%= form.text_field :display_name, placeholder: 'Question text that will be displayed to the user.', class: 'form-control' %>
+    <%= form.text_field :name, placeholder: 'Use #ANSWER# to insert the answer into the prompt text', class: 'form-control' %>
     <small>
       <%= link_to "Remove", "#", data: { action: "click->nested-form#remove_association" }, class: "btn btn-danger" %>
     </small>

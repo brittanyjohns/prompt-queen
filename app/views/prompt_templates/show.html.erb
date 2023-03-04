@@ -1,4 +1,14 @@
-<%= render @prompt_template %>
+<h1><%= @prompt_template.name %></h1>
+<code><%= @prompt_template.prefix_text %></code>
+<hr>
+<%= render "prompts/form" %>
+<div>
+  <% @prompt_template.prompts.each do |prompt| %>
+    <p><%= prompt.id %>
+      <%= prompt.body %>
+    </p>
+  <% end %>
+</div>
 <div>
   <%= link_to "Edit", edit_prompt_template_path(@prompt_template), class: "btn btn-secondary" %> |
   <%= link_to "Back", prompt_templates_path, class: "btn btn-secondary" %>

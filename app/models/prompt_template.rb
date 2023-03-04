@@ -1,5 +1,7 @@
 class PromptTemplate < ApplicationRecord
   has_many :questions, dependent: :destroy
+  has_many :answers, through: :questions
+  has_many :prompts, dependent: :destroy
   accepts_nested_attributes_for :questions, allow_destroy: true
 
   enum prompt_template_type: { image: 0, text: 1, other: 2 }

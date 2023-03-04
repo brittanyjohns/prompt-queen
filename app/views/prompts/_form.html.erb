@@ -1,0 +1,32 @@
+<%= form_with model: [@prompt_template, @prompt] do |form| %>
+  <%= form.fields_for :template_answers do |answer_response| %>
+    <% @prompt_template.questions.each do |question| %>
+      <h2>
+        <%= question.display_name %>
+        <h2>
+          <% case question.question_type %>
+          <% when 'single_choice' %>
+          <% question.answers.each do |answer| %>
+            <p>
+              <%= answer_response.radio_button question.id, answer.id %>
+              <%= answer.name %>
+            </p>
+          <% end %>
+          <% when 'multiple_choice' %>
+          <% question.answers.each do |answer| %>
+            <p>
+              <%= answer_response.check_box question.id, { multiple: true }, answer.id %>
+              <%= answer.name %>
+            </p>
+          <% end %>
+          <% when 'long_answer' %>
+          <%= answer_response.text_area question.id %>
+          <% when 'number_select' %>
+          <%= select_tag question.id, options_for_select(1..5), class: "form-control" %>
+        <% end %>
+      <% end %>
+    <% end %>
+    <div class="actions">
+      <%= form.submit %>
+    </div>
+  <% end %>

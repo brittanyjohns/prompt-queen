@@ -8,6 +8,7 @@ class PromptTemplatesController < ApplicationController
 
   # GET /prompt_templates/1 or /prompt_templates/1.json
   def show
+    @prompt = @prompt_template.prompts.new
   end
 
   # GET /prompt_templates/new
@@ -66,12 +67,13 @@ class PromptTemplatesController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def prompt_template_params
-    params.require(:prompt_template).permit(:name, :prompt_template_type, :user_id,
+    params.require(:prompt_template).permit(:name, :prompt_template_type, :user_id, :prefix_text,
                                             questions_attributes: [
                                               :_destroy,
                                               :id,
                                               :question_type,
                                               :name,
+                                              :display_name,
                                               answers_attributes: [:_destroy, :id, :name],
                                             ])
   end

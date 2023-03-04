@@ -1,0 +1,6 @@
+<%= render @prompt %>
+<div>
+  <%= link_to "Edit this prompt", edit_prompt_template_prompt_path(@prompt_template, @prompt) %> |
+  <%= link_to "Back to prompts", prompt_template_prompts_path(@prompt_template) %>
+  <%= button_to "Destroy this prompt", prompt_template_prompt_path(@prompt_template, @prompt), method: :delete %>
+</div>

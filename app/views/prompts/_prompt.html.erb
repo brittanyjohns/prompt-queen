@@ -1,0 +1,16 @@
+<div id="<%= dom_id prompt %>">
+  <h1><%= prompt.prompt_template.name %></h1>
+  <% prompt.prompt_template.questions.each do |question| %>
+    <h2><%= question.name %></h2>
+    <% case question.question_type %>
+    <% when 'single_choice' %>
+    <p><%= question.answers.find { |a| a.id.to_s == prompt.template_answers[question.id.to_s] }&.name %></p>
+    <% when 'multiple_choice' %>
+    <% question.answers.select { |a| prompt.multiple_choice_answers(question.id).include?(a.id) }.each do |answer| %>
+      <p><%= answer.name %></p>
+    <% end %>
+    <% when 'long_answer' %>
+    <p><%= prompt.template_answers[question.id.to_s] %></p>
+  <% end %>
+<% end %>
+</div>

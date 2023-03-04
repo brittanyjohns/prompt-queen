@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_03_03_185917) do
+ActiveRecord::Schema[7.1].define(version: 2023_03_04_193046) do
   create_table "answers", force: :cascade do |t|
     t.integer "question_id", null: false
     t.string "name"
@@ -25,6 +25,17 @@ ActiveRecord::Schema[7.1].define(version: 2023_03_03_185917) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "prefix_text"
+  end
+
+  create_table "prompts", force: :cascade do |t|
+    t.integer "prompt_template_id", null: false
+    t.text "body"
+    t.integer "created_by"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.json "template_answers"
+    t.index ["prompt_template_id"], name: "index_prompts_on_prompt_template_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -33,9 +44,11 @@ ActiveRecord::Schema[7.1].define(version: 2023_03_03_185917) do
     t.integer "question_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "display_name"
     t.index ["prompt_template_id"], name: "index_questions_on_prompt_template_id"
   end
 
   add_foreign_key "answers", "questions"
+  add_foreign_key "prompts", "prompt_templates"
   add_foreign_key "questions", "prompt_templates"
 end

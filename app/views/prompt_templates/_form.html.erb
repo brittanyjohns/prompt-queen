@@ -11,6 +11,9 @@
   <div class="form-inputs">
     <%= form.input :name %>
   </div>
+  <div class="form-inputs">
+    <%= form.input :prefix_text %>
+  </div>
   <div data-controller="nested-form" data-nested-form-index-value='QUESTION_RECORD'>
     <template data-nested-form-target='template'>
       <%= form.fields_for :questions, Question.new, child_index: 'QUESTION_RECORD' do |question| %>

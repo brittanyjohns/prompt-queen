@@ -1,4 +1,5 @@
-<h2><%= question.name %></h2>
+<h2><%= question.display_name %></h2>
+<p><%= question.name %></p>
 <% case question.question_type %>
 <% when 'single_choice' %>
 <% question.answers.each do |answer| %>
