@@ -1,5 +1,6 @@
-<h2><%= question.display_name %></h2>
-<p><%= question.name %></p>
+<div class="single-question">
+<h2 class="question-display-name"><%= question.display_name %></h2>
+<p class="small"><%= question.name %></p>
 <% case question.question_type %>
 <% when 'single_choice' %>
 <% question.answers.each do |answer| %>
@@ -18,5 +19,6 @@
 <% when 'long_answer' %>
 <%= text_area_tag question.id %>
 <% when 'number_select' %>
-<%= select_tag question.id, options_for_select(1..5), class: "form-control" %>
+<%= select_tag question.id, options_for_select(1..5), class: "form-control half" %>
 <% end %>
+</div>

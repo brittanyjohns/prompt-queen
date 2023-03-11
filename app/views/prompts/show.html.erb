@@ -3,4 +3,9 @@
   <%= link_to "Edit this prompt", edit_prompt_template_prompt_path(@prompt_template, @prompt) %> |
   <%= link_to "Back to prompts", prompt_template_prompts_path(@prompt_template) %>
   <%= button_to "Destroy this prompt", prompt_template_prompt_path(@prompt_template, @prompt), method: :delete %>
+  <%= button_to "SEND", prompt_text_prompt_template_prompt_path(@prompt_template, @prompt), method: :post if !@prompt.image_request? %>
+  <%= button_to "SEND Images", prompt_images_prompt_template_prompt_path(@prompt_template, @prompt), method: :post if @prompt.image_request? %>
 </div>
+<hr>
+<h1>Responses</h1>
+<%= render 'table' %>

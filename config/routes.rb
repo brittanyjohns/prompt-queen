@@ -1,9 +1,16 @@
 Rails.application.routes.draw do
-  resources :prompts
+  get 'responses/index'
+  get 'responses/show'
+  resources :responses
   # Defines the root path route ("/")
   root "prompt_templates#index"
   resources :prompt_templates do
-    resources :prompts
+    resources :prompts do
+      member do
+        post "prompt_images", to: "prompts#prompt_images"
+        post "prompt_text", to: "prompts#prompt_text"
+      end
+    end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

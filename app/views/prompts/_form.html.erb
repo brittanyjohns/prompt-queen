@@ -22,7 +22,7 @@
           <% when 'long_answer' %>
           <%= answer_response.text_area question.id %>
           <% when 'number_select' %>
-          <%= select_tag question.id, options_for_select(1..5), class: "form-control" %>
+          <%= answer_response.text_area question.id %>
         <% end %>
       <% end %>
     <% end %>

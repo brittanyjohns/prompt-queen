@@ -3,7 +3,7 @@ class PromptTemplatesController < ApplicationController
 
   # GET /prompt_templates or /prompt_templates.json
   def index
-    @prompt_templates = PromptTemplate.all
+    @prompt_templates = PromptTemplate.includes(:prompts, :responses).all
   end
 
   # GET /prompt_templates/1 or /prompt_templates/1.json
@@ -62,7 +62,7 @@ class PromptTemplatesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_prompt_template
-    @prompt_template = PromptTemplate.find(params[:id])
+    @prompt_template = PromptTemplate.includes(:questions, :prompts).find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
@@ -74,7 +74,7 @@ class PromptTemplatesController < ApplicationController
                                               :question_type,
                                               :name,
                                               :display_name,
-                                              answers_attributes: [:_destroy, :id, :name],
+                                              answers_attributes: [:_destroy, :id, :name, :answer_type],
                                             ])
   end
 end

@@ -1,0 +1,26 @@
+.single-prompt {
+  padding: 20px;
+  border: 3px black solid;
+}
+
+.single-prompt-template {
+  padding: 20px;
+  border: 3px black solid;
+}
+
+.prompt-template-name {
+  /* border-bottom: 2px black solid;
+  margin: 5px; */
+}
+.question-display-name {
+  margin-bottom: 0px;
+}
+.prompt-template-link {
+  text-decoration: none;
+  color: black;
+  padding: 2px;
+}
+.prompt-template-link:hover {
+  text-decoration: none;
+  color: rgb(37, 37, 37);
+}

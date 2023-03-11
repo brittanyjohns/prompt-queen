@@ -1,0 +1,15 @@
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @prompt.responses.each do |response| %>
+      <tr>
+        <td><%= link_to response.title, response %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>

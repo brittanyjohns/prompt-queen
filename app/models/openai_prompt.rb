@@ -22,6 +22,7 @@ class OpenaiPrompt
       end
     response = connection.post(URL, body)
     json = JSON.parse(response.body)
+    puts "CALL: #{response.body}"
     json["choices"].first["text"]
   end
 
@@ -62,7 +63,6 @@ class OpenaiPrompt
       prompt: prompt,
       max_tokens: max_tokens,
       temperature: temperature,
-      size: size,
     }.to_json
   end
 

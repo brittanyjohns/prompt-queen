@@ -1,9 +1,5 @@
-<div id="<%= dom_id prompt_template %>">
-  <p>
-    <strong>Type:</strong>
-    <%= prompt_template.prompt_template_type %>
-  </p>
-  <h1><%= prompt_template.name %></h1>
+<div class="single-prompt-template" id="<%= dom_id prompt_template %>">
+  <h1 class="prompt-template-name"><%= prompt_template.name %></h1>
   <% prompt_template.questions.each do |question| %>
     <%= render "questions/question", question: question %>
   <% end %>
