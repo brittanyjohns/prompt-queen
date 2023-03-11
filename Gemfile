@@ -80,3 +80,5 @@ gem "dry-initializer"
 
 # Config & ENV vars
 gem "figaro"
+
+gem "poppler"

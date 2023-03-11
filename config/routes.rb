@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
-  get 'responses/index'
-  get 'responses/show'
+  resources :docs
+  get "home/index", as: "home"
+  get "responses/index"
+  get "responses/show"
   resources :responses
   # Defines the root path route ("/")
   root "prompt_templates#index"
@@ -12,6 +14,8 @@ Rails.application.routes.draw do
       end
     end
   end
+
+  post "site_parser", to: "home#site_parser"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.

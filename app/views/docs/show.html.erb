@@ -1,0 +1,15 @@
+<p style="color: green"><%= notice %></p>
+<%= render @doc %>
+<div class="well">
+  <%= @doc.main_image.methods - Object.methods %>
+  <%= @doc.main_image.attachment.url %>
+  <hr>
+  <%= @doc.raw_body %>
+  <hr>
+  <%= @doc.body.html_safe %>
+</div>
+<div>
+  <%= link_to "Edit this doc", edit_doc_path(@doc) %> |
+  <%= link_to "Back to docs", docs_path %>
+  <%= button_to "Destroy this doc", @doc, method: :delete %>
+</div>
