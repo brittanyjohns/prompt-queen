@@ -1,10 +1,11 @@
-# views/questionnaires/_answer_fields.html.erb
 <div class='nested-fields'>
   <div class='form-group'>
-    <%= form.hidden_field :_destroy %>
-    <%= form.text_field :name, placeholder: 'Answer', class: 'form-control' %>
-    <small>
-      <%= link_to "Remove Answer", "#", data: { action: "click->nested-form#remove_association" } %>
-    </small>
+    <%= question_type %>
+    <%= form.input :name %>
+    <%# <%= form.hidden_field :_destroy %>
+    <%# <%= form.text_field :name, placeholder: 'Answer' %>
+    <p>
+      <%= link_to "Remove Answer", "#", data: { action: "click->nested-form#remove_association" }, class: "btn btn-danger btn-sm" %>
+    </p>
   </div>
 </div>

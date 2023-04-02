@@ -1,32 +1,30 @@
-<%= form_with model: [@prompt_template, @prompt] do |form| %>
-  <%= form.fields_for :template_answers do |answer_response| %>
-    <% @prompt_template.questions.each do |question| %>
+<%= simple_form_for [@prompt_template, @prompt] do |form| %>
+  <%= form.fields_for :answers, prompt.answers.new do |answer_response| %>
+    <% @prompt_template.template_questions.each do |template_question| %>
       <h2>
-        <%= question.display_name %>
-        <h2>
-          <% case question.question_type %>
-          <% when 'single_choice' %>
-          <% question.answers.each do |answer| %>
-            <p>
-              <%= answer_response.radio_button question.id, answer.id %>
-              <%= answer.name %>
-            </p>
-          <% end %>
-          <% when 'multiple_choice' %>
-          <% question.answers.each do |answer| %>
-            <p>
-              <%= answer_response.check_box question.id, { multiple: true }, answer.id %>
-              <%= answer.name %>
-            </p>
-          <% end %>
-          <% when 'long_answer' %>
-          <%= answer_response.text_area question.id %>
-          <% when 'number_select' %>
-          <%= answer_response.text_area question.id %>
-        <% end %>
+        <%= template_question.display_name %>
+      </h2>
+      <p>question_type: <%= template_question.question_type %>template_question.template_answers <%= template_question.template_answers.count %></p>
+      <% template_question.template_answers.each do |template_answer| %>
+        <%= render 'answer_fields', template_answer: template_answer, answer_response: answer_response, template_question: template_question %>
       <% end %>
     <% end %>
-    <div class="actions">
-      <%= form.submit %>
+    <hr>
+    <div data-controller="nested-form" data-nested-form-index-value='DOC_RECORD'>
+      <template data-nested-form-target='template'>
+        <%= form.fields_for :docs, prompt.docs.new, child_index: 'DOC_RECORD' do |doc| %>
+          <%= render 'doc_fields', form: doc %>
+        <% end %>
+      </template>
+      <div data-nested-form-target="add_item">
+        <%= link_to "Add Doc", "#", data: { action: "nested-form#add_association" }, class: "btn btn-success" if @prompt.image_request? %>
+      </div>
     </div>
   <% end %>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
+<% prompt.answers.each do |answer| %>
+  <p><%= answer.name %></p>
+<% end %>

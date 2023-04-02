@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  template_question: one
+  name: MyString
+  answer_type: MyString
+
+two:
+  template_question: two
+  name: MyString
+  answer_type: MyString

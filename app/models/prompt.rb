@@ -1,7 +1,11 @@
 class Prompt < ApplicationRecord
   belongs_to :prompt_template
+  has_many :docs, as: :documentable
   has_many :responses, dependent: :destroy
-  before_save :save_choices, :set_body
+  has_many :answers, dependent: :destroy
+  delegate :template_questions, to: :prompt_template
+  before_save :set_body
+  accepts_nested_attributes_for :answers, allow_destroy: true
 
   def multiple_choice_answers(id)
     return [] if template_answers[id.to_s].nil?
@@ -13,14 +17,10 @@ class Prompt < ApplicationRecord
     question.answers.find { |a| a.id.to_s === self.template_answers[question.id.to_s] }
   end
 
-  def questions
+  def update_questions
     return Question.none unless template_answers
-    prompt_template.questions.find(template_answers.keys)
-  end
-
-  def answers
-    return Answer.none unless template_answers
-    Answer.find(template_answers.values)
+    questions = prompt_template.yquestions.find(template_answers.keys)
+    questions.map { |q| q.update(prompt_id: id) }
   end
 
   def image_request?
@@ -32,8 +32,8 @@ class Prompt < ApplicationRecord
     text_body = ""
 
     answers.each do |answer|
-      question_id = answer.question_id
-      q = Question.find(question_id)
+      question_id = answer.template_question_id
+      q = TemplateQuestion.find(question_id)
       case q.question_type
       when "single_choice"
         if answer.image_size?
@@ -52,8 +52,10 @@ class Prompt < ApplicationRecord
       when "multiple_choice"
         text_body += q.name.gsub("#ANSWER#", q.answers.map(&:name).join(","))
       when "number_select"
-        if image_request?
+        if q.element_count?
           self.element_count = answer.name.to_i
+        elsif q.size_type?
+          self.image_size = answer.name.to_i
         else
           puts "number_select for non-image request"
         end
@@ -80,10 +82,8 @@ class Prompt < ApplicationRecord
   def print_q_and_a
     str = ""
     answers.each do |answer|
-      answer_id = answer.id
-      a = Answer.find(answer_id)
-      q = a.question
-      str += "#{q.question_type}| #{q.name}\n\n\n#{a.answer_type}|#{a.name}\n"
+      q = answer.template_question
+      str += "#{q.question_type}| #{q.name}\n\n\n#{answer.answer_type}|#{answer.name}\n"
     end
     puts str
     str

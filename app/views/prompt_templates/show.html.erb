@@ -1,14 +1,22 @@
 <h1><%= @prompt_template.name %></h1>
 <code><%= @prompt_template.prefix_text %></code>
 <hr>
-<%= render "prompts/form" %>
+<p>prompt_template_type: <%= @prompt_template.prompt_template_type %></p>
 <div>
+  <%= @prompt_template.prompts.pluck(:id)%>
   <% @prompt_template.prompts.each do |prompt| %>
     <div class="bg-light">
-      <%= render prompt if prompt.id %>
+      <%= prompt.id %>
+      <%= render prompt %>
     </div>
   <% end %>
 </div>
+<% @prompt_template.template_questions.each do |question| %>
+  <div class="bg-light">
+    <%= question.id %>
+    <%= render 'questions/template_question', question: question %>
+  </div>
+<% end %>
 <div>
   <%= link_to "Edit", edit_prompt_template_path(@prompt_template), class: "btn btn-secondary" %> |
   <%= link_to "Back", prompt_templates_path, class: "btn btn-secondary" %>

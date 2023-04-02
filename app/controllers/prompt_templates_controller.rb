@@ -14,6 +14,7 @@ class PromptTemplatesController < ApplicationController
   # GET /prompt_templates/new
   def new
     @prompt_template = PromptTemplate.new
+    @prompt_template.template_questions.build
   end
 
   # GET /prompt_templates/1/edit
@@ -22,6 +23,7 @@ class PromptTemplatesController < ApplicationController
 
   # POST /prompt_templates or /prompt_templates.json
   def create
+    puts "prompt_template_params: #{prompt_template_params}"
     @prompt_template = PromptTemplate.new(prompt_template_params)
 
     respond_to do |format|
@@ -37,11 +39,18 @@ class PromptTemplatesController < ApplicationController
 
   # PATCH/PUT /prompt_templates/1 or /prompt_templates/1.json
   def update
+    questions = prompt_template_params["template_questions_attributes"]
+
+    questions.each do |question|
+      puts "q: #{question}"
+    end
+
     respond_to do |format|
       if @prompt_template.update(prompt_template_params)
         format.html { redirect_to prompt_template_url(@prompt_template), notice: "Template was successfully updated." }
         format.json { render :show, status: :ok, location: @prompt_template }
       else
+        pp @prompt_template.errors.inspect
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @prompt_template.errors, status: :unprocessable_entity }
       end
@@ -62,19 +71,19 @@ class PromptTemplatesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_prompt_template
-    @prompt_template = PromptTemplate.includes(:questions, :prompts).find(params[:id])
+    @prompt_template = PromptTemplate.includes(:template_questions, :prompts).find(params[:id])
   end
 
   # Only allow a list of trusted parameters through.
   def prompt_template_params
-    params.require(:prompt_template).permit(:name, :prompt_template_type, :user_id, :prefix_text,
-                                            questions_attributes: [
+    params.require(:prompt_template).permit(:name, :prompt_template_type, :prefix_text,
+                                            template_questions_attributes: [
                                               :_destroy,
                                               :id,
                                               :question_type,
                                               :name,
                                               :display_name,
-                                              answers_attributes: [:_destroy, :id, :name, :answer_type],
+                                              template_answers_attributes: [:_destroy, :id, :name, :answer_type],
                                             ])
   end
 end

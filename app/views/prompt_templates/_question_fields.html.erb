@@ -1,7 +1,7 @@
 <div class='nested-fields box question-fields' data-controller='dynamic-select'>
   <div class='form-group'>
     <%= form.select :question_type,
-        options_for_select(Question.question_type_select, selected: form.object.question_type),
+        options_for_select(TemplateQuestion.question_type_select, selected: form.object.question_type),
         {},
         'data-dynamic-select-target': 'select',
         'data-action': 'dynamic-select#selected' %>
@@ -16,12 +16,12 @@
   </div>
   <div data-controller="nested-form" data-dynamic-select-target='choice' data-nested-form-index-value='ANSWER_RECORD'>
     <template data-nested-form-target='template'>
-      <%= form.fields_for :answers, Answer.new, child_index: 'ANSWER_RECORD' do |answer| %>
-        <%= render 'answer_fields', form: answer %>
+      <%= form.fields_for :template_answers, TemplateAnswer.new, child_index: 'ANSWER_RECORD' do |answer| %>
+        <%= answer.input :name %>
       <% end %>
     </template>
-    <%= form.fields_for :answers do |answer| %>
-      <%= render 'answer_fields', form: answer %>
+    <%= form.fields_for :template_answers do |answer| %>
+      <%= render 'answer_fields', form: answer, question_type: form.object.question_type %>
     <% end %>
     <div data-nested-form-target="add_item">
       <%= link_to "Add Answer", "#", data: { action: "nested-form#add_association" }, class: "btn btn-success" %>

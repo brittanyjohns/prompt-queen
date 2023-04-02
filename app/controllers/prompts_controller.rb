@@ -1,22 +1,23 @@
 class PromptsController < ApplicationController
   before_action :set_prompt_template, except: :show
-  before_action :set_prompt, except: %i[ index new create ]
+  before_action :set_prompt, except: %i[ index new create prompt_images ]
 
   # GET /prompts or /prompts.json
   def index
-    @prompt_template = PromptTemplate.includes(questions: :answers).find(params[:prompt_template_id])
+    @prompt_template = PromptTemplate.includes(template_questions: :template_answers).find(params[:prompt_template_id])
     @prompts = @prompt_template.prompts.all
   end
 
   # GET /prompts/1 or /prompts/1.json
   def show
-    @prompt_template = PromptTemplate.includes(questions: :answers).find(params[:prompt_template_id])
+    @prompt_template = PromptTemplate.includes(template_questions: :template_answers).find(params[:prompt_template_id])
     @prompt = @prompt_template.prompts.find(params[:id])
   end
 
   # GET /prompts/new
   def new
     @prompt = @prompt_template.prompts.new
+    @prompt.answers.new
   end
 
   # GET /prompts/1/edit
@@ -32,6 +33,7 @@ class PromptsController < ApplicationController
         format.html { redirect_to prompt_template_url(@prompt_template), notice: "Prompt was successfully created." }
         format.json { render :show, status: :created, location: @prompt }
       else
+        puts "NOT SAVED!\n #{@prompt.errors.inspect}"
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @prompt.errors, status: :unprocessable_entity }
       end
@@ -42,9 +44,11 @@ class PromptsController < ApplicationController
   def update
     respond_to do |format|
       if @prompt.update(prompt_params)
+        puts "SAVED!"
         format.html { redirect_to prompt_template_prompt_url(@prompt_template, @prompt), notice: "Prompt was successfully updated." }
         format.json { render :show, status: :ok, location: @prompt }
       else
+        puts "NOT SAVED!\n #{@prompt.errors.inspect}"
         format.html { render :edit, status: :unprocessable_entity }
         format.json { render json: @prompt.errors, status: :unprocessable_entity }
       end
@@ -65,14 +69,16 @@ class PromptsController < ApplicationController
     if @prompt.body && !@prompt.body.empty?
       response_title = @prompt_template.name + "-text"
       openai_prompt = OpenaiPrompt.new(@prompt.body)
-      ai_response = openai_prompt.call
+      ai_response = openai_prompt.call_chat
       @response = @prompt.responses.create(title: response_title, prompt_text: @prompt.body, body: ai_response)
 
       ActionText::RichText.create!(record_type: "Response", record_id: @response.id, name: "content", body: "<p>#{ai_response}</p>")
+    else
+      puts "body empty"
     end
 
     respond_to do |format|
-      if @prompt.update(prompt_params)
+      if @prompt.save
         format.html { redirect_to prompt_template_prompt_url(@prompt_template, @prompt), notice: "Prompt was successfully updated." }
         format.json { render :show, status: :ok, location: @prompt }
       else
@@ -83,7 +89,8 @@ class PromptsController < ApplicationController
   end
 
   def prompt_images
-    puts "\n\n#{params}\n"
+    @prompt = Prompt.find(params[:id])
+    puts "PARAMS\n\n#{params}\n"
 
     if @prompt.body && !@prompt.body.empty?
       response_title = @prompt_template.name + "-images"
@@ -101,7 +108,7 @@ class PromptsController < ApplicationController
     end
 
     respond_to do |format|
-      if @prompt.update(prompt_params)
+      if @prompt.save
         format.html { redirect_to prompt_template_prompt_url(@prompt_template, @prompt), notice: "Prompt was successfully updated." }
         format.json { render :show, status: :ok, location: @prompt }
       else
@@ -124,6 +131,6 @@ class PromptsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def prompt_params
-    params.require(:prompt).permit(:prompt_template_id, :body, :created_by, template_answers: {})
+    params.require(:prompt).permit(:prompt_template_id, :body, :created_by, answers_attributes: [:_destroy, :id, :name, :answer_type, :template_question_id], docs_attributes: [:_destroy, :id, :name, :doc_type, :main_image])
   end
 end

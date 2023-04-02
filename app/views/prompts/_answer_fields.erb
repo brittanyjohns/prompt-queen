@@ -1,0 +1,28 @@
+<div class='nested-fields'>
+  <div class='form-group'>
+    <%= answer_response.hidden_field :_destroy %>
+    <%= answer_response.hidden_field :template_question_id, value: template_question.id, class: 'form-control' %>
+    template_question.question_type : <%= template_question.question_type %>
+    <% case template_question.question_type %>
+    <% when 'single_choice' %>
+    <p>
+      <%= answer_response.radio_button :name, value: template_answer.name %>
+      <%= template_answer.name %>
+    </p>
+    <% when 'multiple_choice' %>
+    <p>
+      <%= answer_response.check_box :name, { multiple: true }, template_answer.name %>
+      <%= template_answer.name %>
+    </p>
+    <% when 'long_answer' %>
+    <%= answer_response.text_field :name, placeholder: 'Answer', class: 'form-control' %>
+    <%# <%= answer_response.text_field :template_question_id, value: template_question.id, class: 'hidden' %>
+  </p>
+  <% when 'number_select' %>
+  <%= answer_response.select :name, options_for_select(1..5), class: "form-control half" %>
+  <p>
+    <%= answer_response.text_field :name, placeholder: 'Answer', class: 'form-control half' %>
+  </p>
+<% end %>
+</div>
+</div>

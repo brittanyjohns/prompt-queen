@@ -17,7 +17,6 @@ export default class extends Controller {
         this.choiceTarget.classList.remove('hidden')
         break;
       case 'long_answer':
-      case 'number_select':
         this.longTarget.classList.remove('hidden')
         break;
     }

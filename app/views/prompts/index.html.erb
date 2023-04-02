@@ -1,11 +1,10 @@
-<p style="color: green"><%= notice %></p>
-<h1>Prompts</h1>
+<%= link_to "New prompt", new_prompt_template_prompt_path(@prompt_template), class: "btn btn-info" %>
+<h1>Prompts for <%= @prompt_template.name %></h1>
 <div id="prompts">
-  <% @prompts.each do |prompt| %>
+  <% @prompt_template.prompts.each do |prompt| %>
     <%= render prompt %>
     <p>
       <%= link_to "Show this prompt", prompt_template_prompt_path(@prompt_template, prompt) %>
     </p>
   <% end %>
 </div>
-<%= link_to "New prompt", new_prompt_path %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_03_11_203335) do
+ActiveRecord::Schema[7.1].define(version: 2023_03_24_221539) do
   create_table "action_text_rich_texts", force: :cascade do |t|
     t.string "name", null: false
     t.text "body"
@@ -50,12 +50,14 @@ ActiveRecord::Schema[7.1].define(version: 2023_03_11_203335) do
   end
 
   create_table "answers", force: :cascade do |t|
-    t.integer "question_id", null: false
+    t.integer "prompt_id", null: false
+    t.integer "template_question_id", null: false
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "answer_type"
-    t.index ["question_id"], name: "index_answers_on_question_id"
+    t.index ["prompt_id"], name: "index_answers_on_prompt_id"
+    t.index ["template_question_id"], name: "index_answers_on_template_question_id"
   end
 
   create_table "docs", force: :cascade do |t|
@@ -63,14 +65,16 @@ ActiveRecord::Schema[7.1].define(version: 2023_03_11_203335) do
     t.string "doc_type"
     t.text "body"
     t.text "raw_body"
+    t.string "documentable_type", null: false
+    t.integer "documentable_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["documentable_type", "documentable_id"], name: "index_doc_on_documentable"
   end
 
   create_table "prompt_templates", force: :cascade do |t|
-    t.string "name"
     t.integer "prompt_template_type"
-    t.integer "user_id"
+    t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "prefix_text"
@@ -80,22 +84,22 @@ ActiveRecord::Schema[7.1].define(version: 2023_03_11_203335) do
     t.integer "prompt_template_id", null: false
     t.text "body"
     t.integer "created_by"
+    t.datetime "sent_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.json "template_answers"
     t.integer "element_count"
     t.string "image_size"
     t.index ["prompt_template_id"], name: "index_prompts_on_prompt_template_id"
   end
 
   create_table "questions", force: :cascade do |t|
-    t.integer "prompt_template_id", null: false
+    t.integer "prompt__id", null: false
     t.string "name"
     t.integer "question_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "display_name"
-    t.index ["prompt_template_id"], name: "index_questions_on_prompt_template_id"
+    t.index ["prompt__id"], name: "index_questions_on_prompt__id"
   end
 
   create_table "responses", force: :cascade do |t|
@@ -109,10 +113,32 @@ ActiveRecord::Schema[7.1].define(version: 2023_03_11_203335) do
     t.index ["prompt_id"], name: "index_responses_on_prompt_id"
   end
 
+  create_table "template_answers", force: :cascade do |t|
+    t.integer "template_question_id", null: false
+    t.string "name"
+    t.string "answer_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["template_question_id"], name: "index_template_answers_on_template_question_id"
+  end
+
+  create_table "template_questions", force: :cascade do |t|
+    t.integer "prompt_template_id", null: false
+    t.string "name"
+    t.integer "question_type"
+    t.string "display_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["prompt_template_id"], name: "index_template_questions_on_prompt_template_id"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "answers", "questions"
+  add_foreign_key "answers", "prompts"
+  add_foreign_key "answers", "template_questions"
   add_foreign_key "prompts", "prompt_templates"
-  add_foreign_key "questions", "prompt_templates"
+  add_foreign_key "questions", "prompt_s"
   add_foreign_key "responses", "prompts"
+  add_foreign_key "template_answers", "template_questions"
+  add_foreign_key "template_questions", "prompt_templates"
 end

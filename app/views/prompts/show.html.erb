@@ -1,4 +1,7 @@
-<%= render @prompt %>
+<%= @prompt.id %>
+<h1><%= @prompt.prompt_template.prompt_template_type %></h1>
+<p><%= @prompt.body %></p>
+<%= @prompt.print_q_and_a %>
 <div>
   <%= link_to "Edit this prompt", edit_prompt_template_prompt_path(@prompt_template, @prompt) %> |
   <%= link_to "Back to prompts", prompt_template_prompts_path(@prompt_template) %>
@@ -8,4 +11,7 @@
 </div>
 <hr>
 <h1>Responses</h1>
-<%= render 'table' %>
+<%= render 'table', prompt: @prompt %>
+<div class="well">
+  <%= @prompt.body %>
+</div>

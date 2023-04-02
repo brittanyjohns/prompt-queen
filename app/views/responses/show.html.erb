@@ -1,4 +1,10 @@
 <h1><%= link_to @response.prompt_template.name, @response.prompt_template  %> Responses</h1>
 <div class="well">
-  <%= @response.content %>
+  <%= @response.content.body %>
+</div>
+<div class="well">
+  <%= @response.content.inspect %>
+</div>
+<div class="well">
+  <%= @response.prompt.print_q_and_a %>
 </div>

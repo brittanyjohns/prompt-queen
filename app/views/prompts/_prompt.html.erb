@@ -1,10 +1,14 @@
 <div class="single-prompt" id="<%= dom_id prompt %>">
-  <%= link_to "Show this prompt", prompt_template_prompt_path(@prompt_template, prompt), class: "btn" if prompt.id %>
-  <% prompt.prompt_template.questions.each do |question| %>
-    <h4 class="text-truncate"><%= question.display_name %>
-      <% question.answers_with(prompt.template_answers[question.id.to_s])&.each do |answer| %>
-        <small><%= answer.name %></small>
+  <%= link_to "Show", prompt_template_prompt_path(@prompt_template, prompt), class: "btn btn-info" if prompt.id %>
+  Questions: <%= prompt.template_questions.count %> | Answers: <%= prompt.answers.count %>
+  <% prompt.template_questions.each do |question| %>
+    <h4 class="text-truncate">Question: <%= question.display_name %>        <br>
+      <% question.template_answers.each do |answer| %>
+        &nbsp; <%= answer.id %> &nbsp; <small><%= answer.name %></small><br>
       <% end %>
     </h4>
+    <% question.answers.each do |answer| %>
+      &nbsp; <%= answer.id %> &nbsp; <small><%= answer.name %></small><br>
+    <% end %>
   <% end %>
 </div>
